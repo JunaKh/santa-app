@@ -33,7 +33,7 @@ describe('Email Service', () => {
 
     afterEach(() => {
         sendMailMock.mockClear();
-        _clearPendingRequests(); // Очистка очереди запросов между тестами
+        _clearPendingRequests();
     });
 
     it('should add pending request and call sendMail', async () => {

@@ -3,16 +3,15 @@ const { google } = require('googleapis');
 
 let pendingRequests = [];
 
-// Настройка OAuth2 клиента
 const oAuth2Client = new google.auth.OAuth2(
-    'YOUR_CLIENT_ID', // замените на ваш client_id
-    'YOUR_CLIENT_SECRET', // замените на ваш client_secret
-    'https://developers.google.com/oauthplayground' // URI перенаправления
+    'YOUR_CLIENT_ID',
+    'YOUR_CLIENT_SECRET',
+    'https://developers.google.com/oauthplayground'
 );
 
-// Установите refresh_token
+
 oAuth2Client.setCredentials({
-    refresh_token: 'YOUR_REFRESH_TOKEN' // замените на ваш refresh_token
+    refresh_token: 'YOUR_REFRESH_TOKEN' // yours refresh_token
 });
 
 async function sendMail(mailOptions) {
@@ -23,7 +22,7 @@ async function sendMail(mailOptions) {
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: 'your-email@gmail.com', // замените на ваш email
+                user: 'your-email@gmail.com',
                 clientId: 'YOUR_CLIENT_ID',
                 clientSecret: 'YOUR_CLIENT_SECRET',
                 refreshToken: 'YOUR_REFRESH_TOKEN',
