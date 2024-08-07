@@ -10,49 +10,61 @@ The Santa App is a web application designed for children to submit their Christm
 - **Form Submission**: Allows children to submit their Christmas wishes.
 - **Error Handling**: Provides feedback if the user is not registered or is too old.
 - **Success Page**: Displays a confirmation message when the wish is successfully submitted.
+- **Email Sending**: Sends email with information on all pending (not yet sent) requests every 15 seconds.
 
 ## Project Structure
 
-```
-my-new-app/
-├── .idea/
+```bash
+santa-app/
 ├── dist/
 ├── node_modules/
 ├── public/
+│   ├── index.html
+│   └── vite.svg
 ├── server/
 │   ├── controllers/
-│   │   ├── requestController.js
-│   │   └── ...
+│   │   ├── requestController.test.ts
+│   │   ├── requestController.ts
 │   ├── services/
-│   │   ├── dataService.js
-│   │   ├── emailService.js
-│   │   └── ...
-│   ├── utils/
-│   │   ├── validationUtils.js
-│   │   └── ...
-│   ├── server.js
+│   │   ├── dataService.test.ts
+│   │   ├── dataService.ts
+│   │   ├── emailService.test.ts
+│   │   ├── emailService.ts
+│   ├── server.ts
+│   ├── .env
+│   ├── env.d.ts
+│   ├── jest.server.config.cjs
 │   ├── package.json
-│   ├── ...
+│   ├── package-lock.json
+│   └── tsconfig.node.json
 ├── src/
+│   ├── assets/
+│   │   └── react.svg
 │   ├── components/
+│   │   ├── ErrorPage.test.tsx
 │   │   ├── ErrorPage.tsx
+│   │   ├── SantaForm.tsx
+│   │   ├── SuccessPage.test.tsx
 │   │   ├── SuccessPage.tsx
-│   │   └── ...
+│   ├── services/
+│   ├── App.css
 │   ├── App.tsx
+│   ├── index.css
 │   ├── main.tsx
-│   ├── ...
+│   ├── setupTests.ts
+│   ├── style.css
+│   ├── vite-env.d.ts
 ├── .eslint.cjs
 ├── .gitignore
 ├── index.html
 ├── jest.config.cjs
-├── package-lock.json
+├── nodemon.json
 ├── package.json
+├── package-lock.json
 ├── README.md
 ├── tsconfig.app.json
 ├── tsconfig.json
-├── tsconfig.node.json
 ├── vite.config.ts
-└── ...
 ```
 
 ## Installation
@@ -67,8 +79,8 @@ my-new-app/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/JunaKh/test-axa.git
-cd my-new-app
+git clone https://github.com/JunaKh/santa-app.git
+cd santa-app
 ```
 
 2. Install dependencies for both client and server:
@@ -77,12 +89,8 @@ cd my-new-app
 # Install root dependencies
 npm install
 
-# Install client dependencies
-cd src
-npm install
-
 # Install server dependencies
-cd ../server
+cd server
 npm install
 ```
 
@@ -121,23 +129,23 @@ npm test
 The Santa App uses a client-server architecture to separate concerns and improve scalability:
 
 - **Client-Side**: Built with React, the client-side provides an interactive interface for users to enter their details and wishes. It handles form validation and displays appropriate success or error messages based on the server response.
-- **Server-Side**: Built with Express.js, the server-side handles user validation by fetching data from external JSON files. It ensures that only valid users can submit their wishes and enforces age restrictions.
+- **Server-Side**: Built with Express.js and TypeScript, the server-side handles user validation by fetching data from external JSON files. It ensures that only valid users can submit their wishes and enforces age restrictions.
 
 ### Server-Side Components
 
 1. **Controllers**:
-    - `requestController.js`: Handles the form submission and validation logic. It coordinates with the services to validate user data and send responses back to the client.
+   - `requestController.ts`: Handles the form submission and validation logic. It coordinates with the services to validate user data and send responses back to the client.
 
 2. **Services**:
-    - `dataService.js`: Fetches user data and profiles from external JSON files.
-    - `emailService.js`: Manages the email sending logic, including adding pending requests and sending emails at regular intervals.
+   - `dataService.ts`: Fetches user data and profiles from external JSON files.
+   - `emailService.ts`: Manages the email sending logic, including adding pending requests and sending emails at regular intervals.
 
 3. **Utilities**:
-    - `validationUtils.js`: Contains helper functions for validation, such as calculating age and validating date formats.
+   - `calculateAge.ts`: Contains helper functions for validation, such as calculating age and validating date formats.
 
 ### Data Validation
 
-The server-side validation logic is implemented in `requestController.js` using the `validateUserData` function from `dataService.js`, which performs the following checks:
+The server-side validation logic is implemented in `requestController.ts` using the `validateUserData` function from `dataService.ts`, which performs the following checks:
 
 1. **User Existence**: The function checks if the user ID exists in the `users.json` dataset.
 2. **Profile Existence**: It then verifies if the user profile exists in the `userProfiles.json` dataset.
@@ -155,23 +163,23 @@ The testing strategy involves unit tests for both client and server components t
 
 ### Justification for Architecture and Implementation
 
-### Separation of Concerns
+#### Separation of Concerns
 
 By separating the client and server, we ensure that the application is modular and each part can be developed, tested, and maintained independently. This separation allows us to focus on the specific needs of each component without affecting the other.
 
-### Scalability
+#### Scalability
 
 This architecture allows for independent scaling of the client and server components. For example, during high traffic periods, we can scale the server independently of the client, ensuring that the application remains responsive and performs well under load.
 
-### Security
+#### Security
 
 Sensitive validation logic is kept on the server-side, preventing manipulation from the client-side. This approach ensures that the integrity of the data is maintained and that only authorized users can access certain functionalities.
 
-### Flexibility
+#### Flexibility
 
 The architecture allows for easy integration with other services or migration to a microservices architecture if needed in the future. This flexibility ensures that the application can grow and evolve as requirements change.
 
-### Detailed Validation and Testing
+#### Detailed Validation and Testing
 
 The validation logic ensures that only valid users can submit their wishes. By writing comprehensive tests, we ensure that the validation logic works correctly and handles various edge cases. This testing strategy helps maintain the reliability and robustness of the application.
 
@@ -190,6 +198,3 @@ I wrote the logic for sending emails and included tests for this functionality. 
 3. Make your changes and commit them (`git commit -m 'Add some feature'`).
 4. Push to the branch (`git push origin feature-branch`).
 5. Create a new Pull Request.
-```
-
-Этот README файл включает обновленную архитектуру проекта с добавлением контроллеров и утилит. Если потребуется дополнительная информация или изменения, пожалуйста, дайте знать.

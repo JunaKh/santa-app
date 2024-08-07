@@ -1,13 +1,13 @@
-const request = require('supertest');
-const { app, startServer } = require('../server');
-const { addPendingRequest } = require('../services/emailService');
-const { validateUserData } = require('../services/dataService');
+import request from 'supertest';
+import { app, startServer } from '../server';
+import { addPendingRequest } from '../services/emailService';
+import { validateUserData } from '../services/dataService';
 
 jest.mock('../services/emailService');
 jest.mock('../services/dataService');
 
 describe('Request Controller', () => {
-    let server;
+    let server: ReturnType<typeof startServer>;
 
     beforeAll(() => {
         server = startServer(5001);
@@ -18,8 +18,8 @@ describe('Request Controller', () => {
     });
 
     beforeEach(() => {
-        validateUserData.mockClear();
-        addPendingRequest.mockClear();
+        (validateUserData as jest.Mock).mockClear();
+        (addPendingRequest as jest.Mock).mockClear();
     });
 
     it('should return 400 if userid or wish is missing', async () => {
@@ -38,7 +38,7 @@ describe('Request Controller', () => {
     });
 
     it('should return 400 if validation fails', async () => {
-        validateUserData.mockResolvedValue({ isValid: false, error: 'User not found' });
+        (validateUserData as jest.Mock).mockResolvedValue({ isValid: false, error: 'User not found' });
         const response = await request(app).post('/api/submit').send({
             userid: 'unknown.user',
             wish: 'A new bike'
@@ -48,7 +48,7 @@ describe('Request Controller', () => {
     });
 
     it('should return 200 if validation succeeds', async () => {
-        validateUserData.mockResolvedValue({
+        (validateUserData as jest.Mock).mockResolvedValue({
             isValid: true,
             user: { address: '219-1130, Ikanikeisaiganaibaai, Musashino-shi, Tokyo' }
         });

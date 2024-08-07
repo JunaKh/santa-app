@@ -1,6 +1,5 @@
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
-const { addPendingRequest, _clearPendingRequests, _sendPendingRequestsEmail } = require('./emailService');
+import nodemailer from 'nodemailer';
+import { addPendingRequest, _clearPendingRequests, _sendPendingRequestsEmail } from './emailService';
 
 jest.mock('nodemailer');
 jest.mock('googleapis', () => {
@@ -22,11 +21,11 @@ jest.mock('googleapis', () => {
 });
 
 describe('Email Service', () => {
-    let sendMailMock;
+    let sendMailMock: jest.Mock;
 
     beforeAll(() => {
         sendMailMock = jest.fn();
-        nodemailer.createTransport.mockReturnValue({
+        (nodemailer.createTransport as jest.Mock).mockReturnValue({
             sendMail: sendMailMock
         });
     });
