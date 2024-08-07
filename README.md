@@ -140,9 +140,6 @@ The Santa App uses a client-server architecture to separate concerns and improve
    - `dataService.ts`: Fetches user data and profiles from external JSON files.
    - `emailService.ts`: Manages the email sending logic, including adding pending requests and sending emails at regular intervals.
 
-3. **Utilities**:
-   - `calculateAge.ts`: Contains helper functions for validation, such as calculating age and validating date formats.
-
 ### Data Validation
 
 The server-side validation logic is implemented in `requestController.ts` using the `validateUserData` function from `dataService.ts`, which performs the following checks:
